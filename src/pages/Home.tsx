@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
 import FeaturedCars from "../components/home/FeaturedCars";
+import Autoplay from "embla-carousel-autoplay";
+import { useEffect, useRef } from "react";
 
 const bannerSlides = [
   {
@@ -26,44 +31,52 @@ const bannerSlides = [
 ];
 
 const Home = () => {
+  const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
+
   return (
     <div>
       {/* Banner Section */}
       <section className="relative">
-        <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          navigation
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 5000 }}
-          className="h-[600px]"
+        <Carousel
+          plugins={[plugin.current]}
+          className="h-[600px] w-full"
+          opts={{
+            loop: true,
+          }}
         >
-          {bannerSlides.map((slide, index) => (
-            <SwiperSlide key={index}>
-              <div
-                className="relative h-full bg-cover bg-center"
-                style={{ backgroundImage: `url(${slide.image})` }}
-              >
-                <div className="absolute inset-0 bg-black bg-opacity-40" />
-                <div className="absolute inset-0 flex items-center justify-center text-center">
-                  <div className="max-w-3xl px-4">
-                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-                      {slide.title}
-                    </h1>
-                    <p className="text-xl text-white mb-8">
-                      {slide.description}
-                    </p>
-                    <Link
-                      to="/cars"
-                      className="inline-block bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors"
-                    >
-                      Browse Cars
-                    </Link>
+          <CarouselContent>
+            {bannerSlides.map((slide, index) => (
+              <CarouselItem key={index} className="h-[600px]">
+                <div
+                  className="relative h-full w-full bg-cover bg-center"
+                  style={{ backgroundImage: `url(${slide.image})` }}
+                >
+                  <div className="absolute inset-0 bg-black bg-opacity-40" />
+                  <div className="absolute inset-0 flex items-center justify-center text-center">
+                    <div className="max-w-3xl px-4">
+                      <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+                        {slide.title}
+                      </h1>
+                      <p className="text-xl text-white mb-8">
+                        {slide.description}
+                      </p>
+                      <Button
+                        asChild
+                        size="lg"
+                        variant="default"
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        <Link to="/cars">Browse Cars</Link>
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-4" />
+          <CarouselNext className="right-4" />
+        </Carousel>
       </section>
 
       {/* Featured Cars Section */}
@@ -98,6 +111,47 @@ const Home = () => {
               <p className="text-gray-700">
                 "Excellent service and amazing selection of cars. The team was
                 very helpful throughout the entire process."
+              </p>
+            </div>
+
+            {/* Testimonial 2 */}
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                  <span className="text-xl font-semibold text-gray-600">
+                    SR
+                  </span>
+                </div>
+                <div className="ml-4">
+                  <h4 className="font-semibold">Sarah Rodriguez</h4>
+                  <p className="text-gray-600">
+                    Bought a Mercedes-Benz C-Class
+                  </p>
+                </div>
+              </div>
+              <p className="text-gray-700">
+                "The buying process was smooth and transparent. I got a great
+                deal on my dream car and couldn't be happier with the service."
+              </p>
+            </div>
+
+            {/* Testimonial 3 */}
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                  <span className="text-xl font-semibold text-gray-600">
+                    MP
+                  </span>
+                </div>
+                <div className="ml-4">
+                  <h4 className="font-semibold">Michael Parker</h4>
+                  <p className="text-gray-600">Bought an Audi A4</p>
+                </div>
+              </div>
+              <p className="text-gray-700">
+                "Outstanding customer service and attention to detail. They
+                helped me find the perfect car that matched all my
+                requirements."
               </p>
             </div>
           </div>

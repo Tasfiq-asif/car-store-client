@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Car } from "../../types";
+import { Button } from "@/components/ui/button";
 import FeaturedCarCard from "../cars/FeaturedCarCard";
 
 // Mock data for featured cars
@@ -30,7 +31,7 @@ const featuredCars: Car[] = [
     title: "2024 Mercedes-Benz C-Class",
     price: 52000,
     description: "Elegant design with cutting-edge technology",
-    image: "/mercedes-benz-C-Class.jpg", // Using same image as placeholder
+    image: "/mercedes-benz-C-Class.jpg",
     brand: "Mercedes-Benz",
     model: "C-Class",
     year: 2024,
@@ -51,7 +52,7 @@ const featuredCars: Car[] = [
     title: "2023 Audi A4",
     price: 48000,
     description: "Perfect blend of performance and comfort",
-    image: "/Audi-A4.jpg", // Using same image as placeholder
+    image: "/Audi-A4.jpg",
     brand: "Audi",
     model: "A4",
     year: 2023,
@@ -87,12 +88,9 @@ const FeaturedCars = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Link
-            to="/cars"
-            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors"
-          >
-            View All Cars
-          </Link>
+          <Button asChild size="lg" variant="outline">
+            <Link to="/cars">View All Cars</Link>
+          </Button>
         </div>
       </div>
     </section>
