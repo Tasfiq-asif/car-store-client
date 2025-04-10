@@ -40,9 +40,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       if (response.token && response.data) {
         localStorage.setItem("token", response.token);
         const userData: User = {
-          id: response.data.email,
           email: response.data.email,
           name: response.data.name,
+          role: response.data.role as "user" | "admin",
+          userStatus: response.data.userStatus as "active" | "inactive",
         };
         setUser(userData);
         localStorage.setItem("userData", JSON.stringify(userData));
@@ -71,9 +72,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       if (response.token && response.data) {
         localStorage.setItem("token", response.token);
         const userData: User = {
-          id: response.data.email,
           email: response.data.email,
           name: response.data.name,
+          role: response.data.role as "user" | "admin",
+          userStatus: response.data.userStatus as "active" | "inactive",
         };
         setUser(userData);
         localStorage.setItem("userData", JSON.stringify(userData));
