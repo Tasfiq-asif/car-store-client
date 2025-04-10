@@ -5,6 +5,13 @@ import Home from "../pages/Home";
 import SignInPage from "../pages/auth/SignIn";
 import SignUpPage from "../pages/auth/SignUp";
 import { useAuth } from "../hooks/useAuth";
+import Dashboard from "@/components/dashboard/Dashboard";
+import AdminHome from "@/components/dashboard/AdminDashboard/AdminHome";
+import Users from "@/components/dashboard/AdminDashboard/Users";
+import ProductsManages from "@/components/dashboard/AdminDashboard/ProductsManages";
+import Orders from "@/components/dashboard/UserDashboard/Orders";
+import Setting from "@/components/dashboard/UserDashboard/Setting";
+import Profile from "@/components/dashboard/Profile";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -39,5 +46,33 @@ export const router = createBrowserRouter([
         element: <SignUpPage />,
       },
     ],
-  },
+  },{
+    path:"/dashboard",
+    element:<Dashboard/>,
+    children:[
+      {
+        path:"/dashboard",
+        element: <AdminHome/>
+      },{
+        path: "/dashboard/users",
+        element: <Users />
+      },
+      {
+        path: "/dashboard/products",
+        element: <ProductsManages />
+      },
+      {
+        path: "/dashboard/orders",
+        element: <Orders />
+      },
+      {
+        path: "/dashboard/settings",
+        element: <Setting/>
+      },
+      {
+        path: "/dashboard/profile",
+        element: <Profile/>
+      }
+    ]
+  }
 ]);
