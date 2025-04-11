@@ -3,10 +3,9 @@ import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGrou
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 
-const UserContext = createContext({ role: 'admin' });
 export function AppSidebar() {
      const { user, } = useAuth();
-    const { role } = useContext(UserContext); 
+    // const user = "user"
 
     const projects = [
         { name: "Home", url: "/", icon: "HomeIcon" },
@@ -16,7 +15,8 @@ export function AppSidebar() {
     const adminMenuItems = [
         { name: "Manage Users", url: "/dashboard/users", icon: "FaTrademark" },
         { name: "Manage Products", url: "/dashboard/products", icon: "ShoppingCartIcon" },
-        { name: "Manage Orders", url: "/dashboard/orders", icon: "ShoppingCartIcon" },
+        { name: "Manage Orders", url: "/dashboard/adminOrders", icon: "ShoppingCartIcon" },
+        { name: "Add Products", url: "/dashboard/addProduct", icon: "ShoppingCartIcon" },
     ];
       
     const userMenuItems = [
@@ -24,7 +24,7 @@ export function AppSidebar() {
         { name: "Settings", url: "/dashboard/settings", icon: "SettingsIcon" },
     ];
 
-    const menuItems = role === 'admin' ? [...projects, ...adminMenuItems] : [...projects, ...userMenuItems];
+    const menuItems =user?.role === 'admin' ? [...projects, ...adminMenuItems] : [...projects, ...userMenuItems];
     return (
       <Sidebar>
           <SidebarContent>

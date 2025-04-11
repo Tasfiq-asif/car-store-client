@@ -1,8 +1,11 @@
+import ProfileCad from "./ProfileCad";
+import UpdatePassword from "./UpdatePassword";
 
 const Profile = () => {
     return (
         <div>
-            <h1>profile</h1>
+            <ProfileCad/>
+            <UpdatePassword/>
         </div>
     );
 };

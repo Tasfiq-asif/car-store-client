@@ -1,11 +1,12 @@
-import { TableDemo } from "../AdminDashboard/Table";
+
+import OrderView from "./OrdersView";
 
 
 const Orders = () => {
     return (
         <div>
             orders
-            <TableDemo/>
+            <OrderView/>
         </div>
     );
 };

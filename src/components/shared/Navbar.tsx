@@ -5,7 +5,6 @@ import { FiMenu, FiX } from "react-icons/fi";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
-  console.log(user);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);

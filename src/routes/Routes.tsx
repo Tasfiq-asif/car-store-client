@@ -12,6 +12,9 @@ import ProductsManages from "@/components/dashboard/AdminDashboard/ProductsManag
 import Orders from "@/components/dashboard/UserDashboard/Orders";
 import Setting from "@/components/dashboard/UserDashboard/Setting";
 import Profile from "@/components/dashboard/Profile";
+import AddProducts from "@/components/dashboard/AdminDashboard/AddProducts";
+import AdminOrders from "@/components/dashboard/AdminDashboard/Orders";
+import DashboardHome from "@/components/dashboard/DashboardHome";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -52,7 +55,7 @@ export const router = createBrowserRouter([
     children:[
       {
         path:"/dashboard",
-        element: <AdminHome/>
+        element: <DashboardHome/>
       },{
         path: "/dashboard/users",
         element: <Users />
@@ -66,12 +69,20 @@ export const router = createBrowserRouter([
         element: <Orders />
       },
       {
+        path: "/dashboard/adminOrders",
+        element: <AdminOrders />
+      },
+      {
         path: "/dashboard/settings",
         element: <Setting/>
       },
       {
         path: "/dashboard/profile",
         element: <Profile/>
+      },
+      {
+        path: "/dashboard/addProduct",
+        element: <AddProducts/>
       }
     ]
   }
