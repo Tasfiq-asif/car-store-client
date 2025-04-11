@@ -6,8 +6,9 @@ export interface User {
 }
 
 export interface Car {
-  id: string;
+  _id: string;
   title: string;
+  subtitle: string;
   price: number;
   description: string;
   image: string;

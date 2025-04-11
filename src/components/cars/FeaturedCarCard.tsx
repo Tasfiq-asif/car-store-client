@@ -15,6 +15,7 @@ interface FeaturedCarCardProps {
 }
 
 const FeaturedCarCard = ({ car }: FeaturedCarCardProps) => {
+
   return (
     <Card className="overflow-hidden">
       <div className="aspect-video relative overflow-hidden">
@@ -26,18 +27,14 @@ const FeaturedCarCard = ({ car }: FeaturedCarCardProps) => {
       </div>
       <CardHeader>
         <CardTitle>{car.title}</CardTitle>
-        <CardDescription>{car.description}</CardDescription>
+        <CardDescription>{car.subtitle}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-2xl font-bold">
-              ${car.price.toLocaleString()}
-            </span>
+            <span className="text-2xl font-bold">${car.price}</span>
             <div className="space-x-2">
-              <span className="text-sm text-gray-500">
-                {car.mileage.toLocaleString()} miles
-              </span>
+              <span className="text-sm text-gray-500">{car.mileage} miles</span>
               <span className="text-sm text-gray-500">•</span>
               <span className="text-sm text-gray-500">{car.transmission}</span>
             </div>
@@ -58,7 +55,11 @@ const FeaturedCarCard = ({ car }: FeaturedCarCardProps) => {
       </CardContent>
       <CardFooter>
         <Button asChild className="w-full">
-          <Link to={`/cars/${car.id}`}>View Details</Link>
+          <Link
+            to={`/cars/${car._id}`}
+          >
+            View Details
+          </Link>
         </Button>
       </CardFooter>
     </Card>
