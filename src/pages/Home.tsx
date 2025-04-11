@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import FeaturedCars from "../components/home/FeaturedCars";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
+import CarCard from "@/components/cars/CarCard";
 
 const bannerSlides = [
   {
