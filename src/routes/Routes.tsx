@@ -5,6 +5,9 @@ import Home from "../pages/Home";
 import SignInPage from "../pages/auth/SignIn";
 import SignUpPage from "../pages/auth/SignUp";
 import { useAuth } from "../hooks/useAuth";
+import AllProducts from "../pages/AllProducts";
+import ProductDetails from "../pages/ProductDetails";
+import AboutPage from "../pages/AboutPage";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -29,6 +32,18 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: "allProducts",
+        element: <AllProducts />,
+      },
+      {
+        path: "/cars/:id",
+        element: <ProductDetails />,
+      },
+      {
+        path: "aboutPage",
+        element: <AboutPage />,
       },
       {
         path: "signin",
