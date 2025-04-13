@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux/features/cart/cartSlice";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -10,7 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import { toast } from "react-hot-toast";
+import { axiosPublic } from "@/lib/axios";
 import {
   FaCar,
   FaGasPump,
@@ -20,143 +24,210 @@ import {
   FaCog,
   FaMapMarkerAlt,
   FaCheckCircle,
+  FaCartPlus,
 } from "react-icons/fa";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
+import { PageLoading } from "@/components/ui/page-loading";
 
 const ProductDetails = () => {
-    const { id } = useParams<{ id: string }>();
-    const [car, setCar] = useState<any>(null);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+  const { id } = useParams<{ id: string }>();
+  const [car, setCar] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [addingToCart, setAddingToCart] = useState<boolean>(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-      const fetchCarDetails = async () => {
-        try {
-          const response = await fetch(`http://localhost:8000/api/v1/cars/${id}`);
-          if (!response.ok) {
-            throw new Error("Failed to fetch car details");
-          }
-          const data = await response.json();
-          setCar(data);
-        } catch (err: any) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      if (id) {
-        fetchCarDetails();
+  useEffect(() => {
+    const fetchCarDetails = async () => {
+      try {
+        const response = await axiosPublic.get(`/v1/cars/${id}`);
+        setCar(response.data);
+      } catch (err: any) {
+        setError(err.response?.data?.message || "Failed to fetch car details");
+      } finally {
+        setLoading(false);
       }
-    }, [id]);
+    };
 
-    if (loading) {
-      return <div>Loading...</div>;
+    if (id) {
+      fetchCarDetails();
     }
-    if (error) {
-      return <div>Error: {error}</div>;
+  }, [id]);
+
+  const handleAddToCart = () => {
+    if (car?.data) {
+      setAddingToCart(true);
+
+      setTimeout(() => {
+        const { _id, title, brand, model, price, image } = car.data;
+        dispatch(
+          addToCart({
+            id: _id,
+            title,
+            brand,
+            model,
+            image,
+            price,
+            quantity: 1,
+          })
+        );
+        setAddingToCart(false);
+        toast.success("Added to cart!");
+      }, 500);
     }
-    console.log(car.data);
-    const {
-      title,
-      subtitle,
-      description,
-      price,
-      image,
-      features,
-      brand,
-      model,
-      year,
-      mileage,
-      fuelType,
-      transmission,
-      location,
-      color,
-    } = car.data;
+  };
+
+  const handleBuyNow = () => {
+    if (car?.data) {
+      setAddingToCart(true);
+
+      const { _id, title, brand, model, price, image } = car.data;
+
+      // Directly dispatch without the timeout to ensure it happens before navigation
+      dispatch(
+        addToCart({
+          id: _id,
+          title,
+          brand,
+          model,
+          image,
+          price,
+          quantity: 1,
+        })
+      );
+
+      setAddingToCart(false);
+      toast.success("Added to cart!");
+
+      // Now navigate to the cart page
+      navigate("/cart");
+    }
+  };
+
+  if (loading) {
+    return <PageLoading message="Loading car details..." />;
+  }
+
+  if (error) {
     return (
-      <div>
-        <div className="pt-12 pb-16 bg-gray-100 ">
-          <div className="container mx-auto px-4 md:px-8 lg:px-12">
-            <Card className="overflow-hidden shadow-lg">
-              <div className="md:flex">
-                <div className="md:w-1/2">
-                  <img
-                    src={image}
-                    alt={title}
-                    className="w-full h-auto object-cover border-8 rounded-3xl rounded-tl-none"
-                  />
-                  <div className='p-10'>
-                    <h3 className="text-lg font-semibold mb-2">Description</h3>
-                    <p className="text-gray-700">{description}</p>
-                  </div>
-                </div>
-                <div className="md:w-1/2 p-6">
-                  <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl font-bold tracking-tight">
-                      {title}
-                    </CardTitle>
-                    <CardDescription className="text-gray-500">
-                      {subtitle}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="grid gap-4">
-                    <div className="flex items-center space-x-2">
-                      <FaCar className="text-gray-500" />
-                      <span className="font-semibold">
-                        {brand} {model}
-                      </span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <FaCalendarAlt className="text-gray-500" />
-                      <span>Year: {year}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <FaRoad className="text-gray-500" />
-                      <span>Mileage: {mileage}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <FaGasPump className="text-gray-500" />
-                      <span>Fuel Type: {fuelType}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <FaCog className="text-gray-500" />
-                      <span>Transmission: {transmission}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <FaPalette className="text-gray-500" />
-                      <span>Color: {color}</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <FaMapMarkerAlt className="text-gray-500" />
-                      <span>Location: {location}</span>
-                    </div>
-
-                    <div>
-                      <h3 className="text-lg font-semibold mt-2 mb-2">Features</h3>
-                      <ScrollArea className="max-h-32 scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500 rounded-md p-2">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                          {features &&
-                            features.map((feature, index) => (
-                              <Badge key={index} className="gap-2">
-                                <FaCheckCircle className="text-green-500" />
-                                {feature}
-                              </Badge>
-                            ))}
-                        </div>
-                      </ScrollArea>
-                    </div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between items-center">
-                    <div className="text-3xl font-semibold">$ {price}</div>
-                    <Button>Buy Now</Button>
-                  </CardFooter>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </div>
+      <div className="min-h-[60vh] flex flex-col items-center justify-center">
+        <div className="text-red-500 text-xl mb-4">Error</div>
+        <p className="text-gray-600">{error}</p>
+        <Button variant="outline" onClick={() => navigate(-1)} className="mt-4">
+          Go Back
+        </Button>
       </div>
     );
+  }
+
+  const {
+    title,
+    subtitle,
+    description,
+    price,
+    image,
+    features,
+    brand,
+    model,
+    year,
+    mileage,
+    fuelType,
+    transmission,
+    location,
+    color,
+  } = car.data;
+
+  return (
+    <div className="pt-12 pb-16 bg-gray-100">
+      <LoadingOverlay isLoading={addingToCart} text="Adding to cart..." />
+
+      <div className="container mx-auto px-4 md:px-8 lg:px-12">
+        <Card className="overflow-hidden shadow-lg">
+          <div className="md:flex">
+            <div className="md:w-1/2">
+              <img
+                src={image}
+                alt={title}
+                className="w-full h-auto object-cover border-8 rounded-3xl rounded-tl-none"
+              />
+              <div className="p-10">
+                <h3 className="text-lg font-semibold mb-2">Description</h3>
+                <p className="text-gray-700">{description}</p>
+              </div>
+            </div>
+            <div className="md:w-1/2 p-6">
+              <CardHeader className="space-y-1">
+                <CardTitle className="text-2xl font-bold tracking-tight">
+                  {title}
+                </CardTitle>
+                <CardDescription className="text-gray-500">
+                  {subtitle}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="flex items-center space-x-2">
+                  <FaCar className="text-gray-500" />
+                  <span className="font-semibold">
+                    {brand} {model}
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaCalendarAlt className="text-gray-500" />
+                  <span>Year: {year}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaRoad className="text-gray-500" />
+                  <span>Mileage: {mileage}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaGasPump className="text-gray-500" />
+                  <span>Fuel Type: {fuelType}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaCog className="text-gray-500" />
+                  <span>Transmission: {transmission}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaPalette className="text-gray-500" />
+                  <span>Color: {color}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaMapMarkerAlt className="text-gray-500" />
+                  <span>Location: {location}</span>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold mt-2 mb-2">Features</h3>
+                  <ScrollArea className="max-h-32 scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-500 rounded-md p-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                      {features &&
+                        features.map((feature: string, index: number) => (
+                          <Badge key={index} className="gap-2">
+                            <FaCheckCircle className="text-green-500" />
+                            {feature}
+                          </Badge>
+                        ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-between items-center">
+                <div className="text-3xl font-semibold">${price}</div>
+                <div className="flex gap-2">
+                  <Button variant="outline" onClick={handleAddToCart}>
+                    <FaCartPlus className="mr-2" /> Add to Cart
+                  </Button>
+                  <Button onClick={handleBuyNow}>Buy Now</Button>
+                </div>
+              </CardFooter>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
 };
 
 export default ProductDetails;

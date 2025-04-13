@@ -17,6 +17,7 @@ import DashboardHome from "@/components/dashboard/DashboardHome";
 import AllProducts from "../pages/AllProducts";
 import ProductDetails from "../pages/ProductDetails";
 import AboutPage from "../pages/AboutPage";
+import Cart from "@/pages/Cart";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -63,41 +64,47 @@ export const router = createBrowserRouter([
         element: <SignUpPage />,
       },
     ],
-  },{
-    path:"/dashboard",
-    element:<Dashboard/>,
-    children:[
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
       {
-        path:"/dashboard",
-        element: <DashboardHome/>
-      },{
+        path: "/dashboard",
+        element: <DashboardHome />,
+      },
+      {
         path: "/dashboard/users",
-        element: <Users />
+        element: <Users />,
       },
       {
         path: "/dashboard/products",
-        element: <ProductsManages />
+        element: <ProductsManages />,
       },
       {
         path: "/dashboard/orders",
-        element: <Orders />
+        element: <Orders />,
       },
       {
         path: "/dashboard/adminOrders",
-        element: <AdminOrders />
+        element: <AdminOrders />,
       },
       {
         path: "/dashboard/settings",
-        element: <Setting/>
+        element: <Setting />,
       },
       {
         path: "/dashboard/profile",
-        element: <Profile/>
+        element: <Profile />,
       },
       {
         path: "/dashboard/addProduct",
-        element: <AddProducts/>
-      }
-    ]
-  }
+        element: <AddProducts />,
+      },
+    ],
+  },
+  {
+    path: "/cart",
+    element: <Cart />,
+  },
 ]);

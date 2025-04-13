@@ -2,10 +2,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { FiMenu, FiX } from "react-icons/fi";
+import { FaShoppingCart } from "react-icons/fa";
+import { useAppSelector } from "@/redux/hooks";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const { totalItems } = useAppSelector((state) => state.cart);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -39,6 +42,18 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex md:items-center md:space-x-4">
+            <Link
+              to="/cart"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium relative"
+            >
+              <FaShoppingCart className="h-5 w-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+
             {user ? (
               <>
                 <Link
@@ -73,6 +88,18 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center md:hidden">
+            <Link
+              to="/cart"
+              className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium relative mr-2"
+            >
+              <FaShoppingCart className="h-5 w-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
+
             <button
               onClick={toggleMenu}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
