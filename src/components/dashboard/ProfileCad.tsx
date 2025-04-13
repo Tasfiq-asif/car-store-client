@@ -7,7 +7,7 @@ import { User } from "lucide-react";
 export default function ProfileCad() {
   return (
     <motion.div
-      className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-purple-200 p-6"
+      className=" flex items-center justify-center bg-gradient-to-r from-blue-100 to-purple-200 p-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}

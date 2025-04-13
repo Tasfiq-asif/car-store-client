@@ -32,7 +32,7 @@ const ProductDetails = () => {
     useEffect(() => {
       const fetchCarDetails = async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/cars/${id}`);
+          const response = await fetch(`http://localhost:8000/api/v1/cars/${id}`);
           if (!response.ok) {
             throw new Error("Failed to fetch car details");
           }

@@ -1,10 +1,11 @@
-import { createContext, useContext } from "react";
+
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 
 export function AppSidebar() {
      const { user, } = useAuth();
+     console.log(user)
     // const user = "user"
 
     const projects = [

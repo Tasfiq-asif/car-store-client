@@ -6,9 +6,9 @@ const DashboardHome = () => {
     return (
         <div>
             {
-                user?.role === 'admin' ? <div className="">admin</div>
+                user?.role == 'admin' ? <div className="">Admin</div>
                  : 
-                 <div className="">user</div>
+                 <div className="">User</div>
             }
             
         </div>

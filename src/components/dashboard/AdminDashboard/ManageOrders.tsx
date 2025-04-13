@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { axiosProtected } from "@/lib/axios";
 
 export default function OrderTable() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState();
   const [revenue, setRevenue] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -15,19 +15,22 @@ export default function OrderTable() {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/v1/orders");
-      setOrders(res.data);
+      const res = await axiosProtected.get("http://localhost:8000/api/v1/orders");
+      console.log(res.data.data);
+      setOrders(res.data.data);
     } catch (err) {
       console.error("Failed to fetch orders:", err);
     } finally {
       setLoading(false);
     }
   };
+  console.log(orders)
 
   const fetchRevenue = async () => {
     try {
       const res = await axios.get("http://localhost:8000/api/v1/orders/revenue");
-      setRevenue(res.data.totalRevenue);
+      // console.log(res.data.data);
+      setRevenue(res.data.data);
     } catch (err) {
       console.error("Failed to fetch revenue:", err);
     }
@@ -58,43 +61,33 @@ export default function OrderTable() {
       </p>
       <Card>
         <CardContent>
-          <div className="overflow-x-auto">
-            <table className="min-w-full border">
-              <thead className="bg-gray-200">
-                <tr>
-                  <th className="px-4 py-2 border">Customer</th>
-                  <th className="px-4 py-2 border">Product</th>
-                  <th className="px-4 py-2 border">Amount</th>
-                  <th className="px-4 py-2 border">Status</th>
-                  <th className="px-4 py-2 border">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders?.map((order) => (
-                  <tr key={order._id} className="text-center">
-                    <td className="border px-4 py-2">{order.customerName}</td>
-                    <td className="border px-4 py-2">{order.product}</td>
-                    <td className="border px-4 py-2">${order.amount}</td>
-                    <td className="border px-4 py-2">{order.status}</td>
-                    <td className="border px-4 py-2 space-x-2">
-                      <Button
-                        onClick={() => handleStatusChange(order._id, "accepted")}
-                        className="bg-green-500 hover:bg-green-600 text-white"
-                      >
-                        Accept
-                      </Button>
-                      <Button
-                        onClick={() => handleStatusChange(order._id, "canceled")}
-                        className="bg-red-500 hover:bg-red-600 text-white"
-                      >
-                        Cancel
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">All Sales Data</h2>
+      <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden">
+        <thead className="bg-gray-200">
+          <tr>
+            <th className="px-4 py-2 border">#</th>
+            <th className="px-4 py-2 border">Car ID</th>
+            <th className="px-4 py-2 border">Customer Email</th>
+            <th className="px-4 py-2 border">Quantity</th>
+            <th className="px-4 py-2 border">Total Price ($)</th>
+            <th className="px-4 py-2 border">Sale Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders?.map((sale, index) => (
+            <tr key={sale.carId + index} className="hover:bg-gray-100">
+              <td className="px-4 py-2 border text-center">{index + 1}</td>
+              <td className="px-4 py-2 border">{sale.carId}</td>
+              <td className="px-4 py-2 border">{sale.email}</td>
+              <td className="px-4 py-2 border text-center">{sale.quantity}</td>
+              <td className="px-4 py-2 border text-right">{sale.totalprice}</td>
+              <td className="px-4 py-2 border text-center">{new Date(sale.createdAt).toLocaleDateString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
         </CardContent>
       </Card>
     </div>

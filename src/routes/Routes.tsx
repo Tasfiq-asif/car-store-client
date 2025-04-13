@@ -5,9 +5,7 @@ import Home from "../pages/Home";
 import SignInPage from "../pages/auth/SignIn";
 import SignUpPage from "../pages/auth/SignUp";
 import { useAuth } from "../hooks/useAuth";
-<<<<<<< HEAD
 import Dashboard from "@/components/dashboard/Dashboard";
-import AdminHome from "@/components/dashboard/AdminDashboard/AdminHome";
 import Users from "@/components/dashboard/AdminDashboard/Users";
 import ProductsManages from "@/components/dashboard/AdminDashboard/ProductsManages";
 import Orders from "@/components/dashboard/UserDashboard/Orders";
@@ -16,11 +14,9 @@ import Profile from "@/components/dashboard/Profile";
 import AddProducts from "@/components/dashboard/AdminDashboard/AddProducts";
 import AdminOrders from "@/components/dashboard/AdminDashboard/Orders";
 import DashboardHome from "@/components/dashboard/DashboardHome";
-=======
 import AllProducts from "../pages/AllProducts";
 import ProductDetails from "../pages/ProductDetails";
 import AboutPage from "../pages/AboutPage";
->>>>>>> 2bc845d5a9eed92f66681bd68d8ab899097fedf9
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();

@@ -63,7 +63,7 @@ export default function ManageProducts() {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4 text-center text-blue-700">Manage Cars</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center text-blue-700">Manages Cars</h2>
       <Card>
         <CardContent>
           <div className="overflow-x-auto">
