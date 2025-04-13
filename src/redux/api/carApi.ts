@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const carApi = createApi({
   reducerPath: 'carApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api/v1' }),
   tagTypes: ["StoreCarData"],
   endpoints: (builder) => ({
     getAllCar: builder.query({

@@ -5,6 +5,15 @@ import Home from "../pages/Home";
 import SignInPage from "../pages/auth/SignIn";
 import SignUpPage from "../pages/auth/SignUp";
 import { useAuth } from "../hooks/useAuth";
+import Dashboard from "@/components/dashboard/Dashboard";
+import Users from "@/components/dashboard/AdminDashboard/Users";
+import ProductsManages from "@/components/dashboard/AdminDashboard/ProductsManages";
+import Orders from "@/components/dashboard/UserDashboard/Orders";
+import Setting from "@/components/dashboard/UserDashboard/Setting";
+import Profile from "@/components/dashboard/Profile";
+import AddProducts from "@/components/dashboard/AdminDashboard/AddProducts";
+import AdminOrders from "@/components/dashboard/AdminDashboard/Orders";
+import DashboardHome from "@/components/dashboard/DashboardHome";
 import AllProducts from "../pages/AllProducts";
 import ProductDetails from "../pages/ProductDetails";
 import AboutPage from "../pages/AboutPage";
@@ -54,5 +63,41 @@ export const router = createBrowserRouter([
         element: <SignUpPage />,
       },
     ],
-  },
+  },{
+    path:"/dashboard",
+    element:<Dashboard/>,
+    children:[
+      {
+        path:"/dashboard",
+        element: <DashboardHome/>
+      },{
+        path: "/dashboard/users",
+        element: <Users />
+      },
+      {
+        path: "/dashboard/products",
+        element: <ProductsManages />
+      },
+      {
+        path: "/dashboard/orders",
+        element: <Orders />
+      },
+      {
+        path: "/dashboard/adminOrders",
+        element: <AdminOrders />
+      },
+      {
+        path: "/dashboard/settings",
+        element: <Setting/>
+      },
+      {
+        path: "/dashboard/profile",
+        element: <Profile/>
+      },
+      {
+        path: "/dashboard/addProduct",
+        element: <AddProducts/>
+      }
+    ]
+  }
 ]);
