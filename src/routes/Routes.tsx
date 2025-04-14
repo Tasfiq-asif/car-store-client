@@ -18,6 +18,8 @@ import AllProducts from "../pages/AllProducts";
 import ProductDetails from "../pages/ProductDetails";
 import AboutPage from "../pages/AboutPage";
 import Cart from "@/pages/Cart";
+import OrderSuccess from "../pages/OrderSuccess";
+import OrderFailed from "../pages/OrderFailed";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -106,5 +108,13 @@ export const router = createBrowserRouter([
   {
     path: "/cart",
     element: <Cart />,
+  },
+  {
+    path: "order-success",
+    element: <OrderSuccess />,
+  },
+  {
+    path: "order-failed",
+    element: <OrderFailed />,
   },
 ]);

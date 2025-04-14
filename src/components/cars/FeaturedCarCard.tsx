@@ -15,7 +15,6 @@ interface FeaturedCarCardProps {
 }
 
 const FeaturedCarCard = ({ car }: FeaturedCarCardProps) => {
-
   return (
     <Card className="overflow-hidden">
       <div className="aspect-video relative overflow-hidden">
@@ -55,11 +54,7 @@ const FeaturedCarCard = ({ car }: FeaturedCarCardProps) => {
       </CardContent>
       <CardFooter>
         <Button asChild className="w-full">
-          <Link
-            to={`/cars/${car._id}`}
-          >
-            View Details
-          </Link>
+          <Link to={`/cars/${car._id}`}>View Details</Link>
         </Button>
       </CardFooter>
     </Card>

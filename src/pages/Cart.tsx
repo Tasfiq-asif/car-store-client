@@ -30,8 +30,9 @@ import {
 import { toast } from "react-hot-toast";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 
-// This is your test publishable API key
-const stripePromise = loadStripe("pk_test_your_stripe_publishable_key");
+// Use environment variable for the Stripe publishable key
+const STRIPE_PUBLISHABLE_KEY = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
 const Cart = () => {
   // Using the typed hooks instead of the regular ones
@@ -78,17 +79,23 @@ const Cart = () => {
             quantity: item.quantity,
             price: item.price,
             title: item.title,
+            image: item.image, // Include image for Stripe display
           })),
           email: user.email,
         }
       );
 
-      const { sessionId } = response.data;
+      // Access the sessionId from the correct location in the response
+      const { sessionId } = response.data.data;
+
+      if (!sessionId) {
+        throw new Error("No session ID returned from the server");
+      }
 
       // Redirect to Stripe Checkout
       const stripe = await stripePromise;
       const { error } = await stripe!.redirectToCheckout({
-        sessionId,
+        sessionId: sessionId,
       });
 
       if (error) {

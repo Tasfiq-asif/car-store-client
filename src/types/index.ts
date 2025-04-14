@@ -22,6 +22,8 @@ export interface Car {
   seller: User;
   features: string[];
   createdAt: string;
+  inStock: boolean;
+  quantity: number;
 }
 
 export interface CarFilters {

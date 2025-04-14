@@ -25,10 +25,12 @@ import {
   FaMapMarkerAlt,
   FaCheckCircle,
   FaCartPlus,
+  FaExclamationTriangle,
 } from "react-icons/fa";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
 import { PageLoading } from "@/components/ui/page-loading";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -137,7 +139,11 @@ const ProductDetails = () => {
     transmission,
     location,
     color,
+    inStock,
+    quantity,
   } = car.data;
+
+  const isOutOfStock = !inStock || quantity === 0;
 
   return (
     <div className="pt-12 pb-16 bg-gray-100">
@@ -147,11 +153,23 @@ const ProductDetails = () => {
         <Card className="overflow-hidden shadow-lg">
           <div className="md:flex">
             <div className="md:w-1/2">
-              <img
-                src={image}
-                alt={title}
-                className="w-full h-auto object-cover border-8 rounded-3xl rounded-tl-none"
-              />
+              <div className="relative">
+                <img
+                  src={image}
+                  alt={title}
+                  className={`w-full h-auto object-cover border-8 rounded-3xl rounded-tl-none ${
+                    isOutOfStock ? "opacity-70" : ""
+                  }`}
+                />
+                {isOutOfStock && (
+                  <Badge
+                    variant="destructive"
+                    className="absolute top-4 right-4 text-white font-bold px-3 py-2 text-lg"
+                  >
+                    Out of Stock
+                  </Badge>
+                )}
+              </div>
               <div className="p-10">
                 <h3 className="text-lg font-semibold mb-2">Description</h3>
                 <p className="text-gray-700">{description}</p>
@@ -167,6 +185,17 @@ const ProductDetails = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="grid gap-4">
+                {isOutOfStock && (
+                  <Alert variant="destructive" className="mb-4">
+                    <FaExclamationTriangle className="h-4 w-4" />
+                    <AlertTitle>Out of Stock</AlertTitle>
+                    <AlertDescription>
+                      This item is currently unavailable for purchase. Please
+                      check back later or browse other vehicles.
+                    </AlertDescription>
+                  </Alert>
+                )}
+
                 <div className="flex items-center space-x-2">
                   <FaCar className="text-gray-500" />
                   <span className="font-semibold">
@@ -216,10 +245,16 @@ const ProductDetails = () => {
               <CardFooter className="flex justify-between items-center">
                 <div className="text-3xl font-semibold">${price}</div>
                 <div className="flex gap-2">
-                  <Button variant="outline" onClick={handleAddToCart}>
+                  <Button
+                    variant="outline"
+                    onClick={handleAddToCart}
+                    disabled={isOutOfStock}
+                  >
                     <FaCartPlus className="mr-2" /> Add to Cart
                   </Button>
-                  <Button onClick={handleBuyNow}>Buy Now</Button>
+                  <Button onClick={handleBuyNow} disabled={isOutOfStock}>
+                    {isOutOfStock ? "Out of Stock" : "Buy Now"}
+                  </Button>
                 </div>
               </CardFooter>
             </div>
