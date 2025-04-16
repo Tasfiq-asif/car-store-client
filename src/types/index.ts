@@ -17,7 +17,7 @@ export interface Car {
   year: number;
   price: number;
   mileage: number;
-  fuelType: "Petrol" | "Diesel" | "Electric" | "Hybrid";
+  fuelType: "Petrol" | "Diesel" | "Electric" | "Hybrid" | "Gasoline";
   transmission: "Automatic" | "Manual";
   category: "Sedan" | "SUV" | "Truck" | "Coupe" | "Convertible";
   location: string;

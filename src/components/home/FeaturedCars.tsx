@@ -6,8 +6,9 @@ import FeaturedCarCard from "../cars/FeaturedCarCard";
 // Mock data for featured cars
 const featuredCars: Car[] = [
   {
-    id: "1",
+    _id: "1",
     title: "2023 BMW 3 Series",
+    subtitle: "Luxury sedan with premium features",
     price: 45000,
     description: "Luxury sedan with premium features",
     image: "/bmw-3.jpg",
@@ -15,20 +16,19 @@ const featuredCars: Car[] = [
     model: "3 Series",
     year: 2023,
     mileage: 5000,
-    fuelType: "Gasoline",
+    fuelType: "Petrol",
     transmission: "Automatic",
+    category: "Sedan",
     location: "New York, NY",
-    seller: {
-      id: "1",
-      name: "Premium Motors",
-      email: "info@premiummotors.com",
-    },
+    color: "Black",
     features: ["Leather Seats", "Navigation", "Sunroof"],
-    createdAt: "2024-04-07",
+    quantity: 1,
+    inStock: true,
   },
   {
-    id: "2",
+    _id: "2",
     title: "2024 Mercedes-Benz C-Class",
+    subtitle: "Elegant design with cutting-edge technology",
     price: 52000,
     description: "Elegant design with cutting-edge technology",
     image: "/mercedes-benz-C-Class.jpg",
@@ -38,18 +38,17 @@ const featuredCars: Car[] = [
     mileage: 1000,
     fuelType: "Hybrid",
     transmission: "Automatic",
+    category: "Sedan",
     location: "Los Angeles, CA",
-    seller: {
-      id: "2",
-      name: "Luxury Auto Gallery",
-      email: "sales@luxuryautogallery.com",
-    },
+    color: "Silver",
     features: ["360° Camera", "Wireless Charging", "Lane Assist"],
-    createdAt: "2024-04-07",
+    quantity: 1,
+    inStock: true,
   },
   {
-    id: "3",
+    _id: "3",
     title: "2023 Audi A4",
+    subtitle: "Perfect blend of performance and comfort",
     price: 48000,
     description: "Perfect blend of performance and comfort",
     image: "/Audi-A4.jpg",
@@ -57,16 +56,14 @@ const featuredCars: Car[] = [
     model: "A4",
     year: 2023,
     mileage: 3000,
-    fuelType: "Gasoline",
+    fuelType: "Petrol",
     transmission: "Automatic",
+    category: "Sedan",
     location: "Chicago, IL",
-    seller: {
-      id: "3",
-      name: "Elite Motors",
-      email: "info@elitemotors.com",
-    },
+    color: "White",
     features: ["Virtual Cockpit", "Bang & Olufsen Sound", "Quattro AWD"],
-    createdAt: "2024-04-07",
+    quantity: 1,
+    inStock: true,
   },
 ];
 
@@ -83,7 +80,7 @@ const FeaturedCars = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredCars.map((car) => (
-            <FeaturedCarCard key={car.id} car={car} />
+            <FeaturedCarCard key={car._id} car={car} />
           ))}
         </div>
 
