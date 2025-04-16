@@ -1,8 +1,8 @@
-
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import axios from "axios";
+import { toast } from "react-hot-toast";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
+
 import {
   Dialog,
   DialogContent,
@@ -18,69 +18,113 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { axiosProtected } from "@/lib/axios";
+import { User } from "@/types";
+
+// Define user interface
 
 export default function ManageUsers() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = async () => {
+    setLoading(true);
     try {
-      const res = await axiosProtected.get("http://localhost:8000/api/v1/user");
+      const res = await axiosProtected.get("/v1/user");
       const data = Array.isArray(res.data) ? res.data : res.data.data || [];
       setUsers(data);
     } catch (err) {
       console.error("Failed to fetch users:", err);
+      toast.error("Failed to load users. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this user?")) return;
+
     try {
-      await axiosProtected.delete(`http://localhost:8000/api/v1/user/${id}`);
-      setUsers((prev) => prev.filter((user) => user._id !== id));
-    } catch (err) {
+      setLoading(true);
+      const response = await axiosProtected.delete(`/v1/user/${id}`);
+
+      if (response.data && response.status === 200) {
+        toast.success("User deleted successfully");
+        await fetchUsers(); // Refresh the list after delete
+      } else {
+        throw new Error("Unexpected response from server");
+      }
+    } catch (err: any) {
       console.error("Failed to delete user:", err);
+
+      // Get the error message from the response if possible
+      const errorMessage =
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to delete user. Please try again.";
+
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleUpdate = (user) => {
+  const handleUpdate = (user: User) => {
     setSelectedUser(user);
     setEditModalOpen(true);
   };
 
-  const handleEditChange = (e) => {
+  const handleEditChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setSelectedUser((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const submitUpdate = async () => {
-    try {
-      await axiosProtected.put(
-        `http://localhost:8000/api/v1/user/${selectedUser._id}`,
-        selectedUser
-      );
-      setUsers((prev) =>
-        prev.map((u) => (u._id === selectedUser._id ? selectedUser : u))
-      );
-      setEditModalOpen(false);
-    } catch (err) {
-      console.error("Failed to update user:", err);
+    if (selectedUser) {
+      setSelectedUser((prev) => (prev ? { ...prev, [name]: value } : null));
     }
   };
 
-  if (loading) return <p className="text-center p-4">Loading...</p>;
+  const submitUpdate = async () => {
+    if (!selectedUser) return;
+    setIsSubmitting(true);
+
+    try {
+      const response = await axiosProtected.put(
+        `/v1/user/${selectedUser._id}`,
+        selectedUser
+      );
+
+      if (response.data && response.status === 200) {
+        toast.success("User updated successfully");
+        setEditModalOpen(false);
+        await fetchUsers(); // Refresh the list after update
+      } else {
+        throw new Error("Unexpected response from server");
+      }
+    } catch (err: any) {
+      console.error("Failed to update user:", err);
+
+      // Get the error message from the response if possible
+      const errorMessage =
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to update user. Please try again.";
+
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
-    <div className="p-6">
+    <div className="p-6 relative">
+      <LoadingOverlay isLoading={loading} text="Loading users..." />
+
       <h2 className="text-2xl font-bold mb-4 text-center text-blue-700">
         Manage Users
       </h2>
@@ -101,12 +145,26 @@ export default function ManageUsers() {
               </thead>
               <tbody>
                 {users?.map((user, index) => (
-                  <tr key={user.email} className="hover:bg-gray-100">
-                    <td className="px-4 py-2 border text-center">{index + 1}</td>
+                  <tr key={user._id} className="hover:bg-gray-100">
+                    <td className="px-4 py-2 border text-center">
+                      {index + 1}
+                    </td>
                     <td className="px-4 py-2 border">{user.name}</td>
                     <td className="px-4 py-2 border">{user.email}</td>
-                    <td className="px-4 py-2 border text-center">{user.role}</td>
-                    <td className="px-4 py-2 border text-center">{user.userStatus}</td>
+                    <td className="px-4 py-2 border text-center">
+                      {user.role}
+                    </td>
+                    <td className="px-4 py-2 border text-center">
+                      <span
+                        className={
+                          user.userStatus === "active"
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        {user.userStatus}
+                      </span>
+                    </td>
                     <td className="border px-4 py-2 space-x-2">
                       <Button
                         onClick={() => handleUpdate(user)}
@@ -149,8 +207,10 @@ export default function ManageUsers() {
                 <Label>Role</Label>
                 <Select
                   value={selectedUser.role}
-                  onValueChange={(value) =>
-                    setSelectedUser((prev) => ({ ...prev, role: value }))
+                  onValueChange={(value: "user" | "admin") =>
+                    setSelectedUser((prev) =>
+                      prev ? { ...prev, role: value } : null
+                    )
                   }
                 >
                   <SelectTrigger>
@@ -166,11 +226,15 @@ export default function ManageUsers() {
                 <Label>Status</Label>
                 <Select
                   value={selectedUser.userStatus}
-                  onValueChange={(value) =>
-                    setSelectedUser((prev) => ({
-                      ...prev,
-                      userStatus: value,
-                    }))
+                  onValueChange={(value: "active" | "inactive") =>
+                    setSelectedUser((prev) =>
+                      prev
+                        ? {
+                            ...prev,
+                            userStatus: value,
+                          }
+                        : null
+                    )
                   }
                 >
                   <SelectTrigger>
@@ -183,12 +247,19 @@ export default function ManageUsers() {
                 </Select>
               </div>
               <div className="pt-4 text-right">
-                <Button onClick={submitUpdate}>Update User</Button>
+                <Button onClick={submitUpdate} disabled={isSubmitting}>
+                  {isSubmitting ? "Updating..." : "Update User"}
+                </Button>
               </div>
             </div>
           )}
         </DialogContent>
       </Dialog>
+
+      {/* For the edit modal - show a loading overlay when submitting */}
+      {isSubmitting && (
+        <LoadingOverlay isLoading={true} text="Updating user..." />
+      )}
     </div>
   );
 }

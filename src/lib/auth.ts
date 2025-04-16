@@ -5,10 +5,12 @@ export interface AuthResponse {
   message: string;
   token?: string;
   data?: {
+    _id: string;
     email: string;
     role: string;
     name: string;
     userStatus: string;
+    photo?: string;
   };
 }
 

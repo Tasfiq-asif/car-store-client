@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState, ReactNode } from "react";
-import { User } from "../types";
+
 import { signIn, signUp } from "../lib/auth";
+import { User } from "@/types";
 
 interface AuthContextType {
   user: User | null;
@@ -8,6 +9,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string, name: string) => Promise<void>;
   logout: () => Promise<void>;
+  updateUser: (userData: Partial<User>) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -40,6 +42,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       if (response.token && response.data) {
         localStorage.setItem("token", response.token);
         const userData: User = {
+          _id: response.data._id,
           email: response.data.email,
           name: response.data.name,
           role: response.data.role as "user" | "admin",
@@ -72,6 +75,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       if (response.token && response.data) {
         localStorage.setItem("token", response.token);
         const userData: User = {
+          _id: response.data._id,
           email: response.data.email,
           name: response.data.name,
           role: response.data.role as "user" | "admin",
@@ -85,12 +89,21 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  const updateUser = (userData: Partial<User>) => {
+    if (user) {
+      const updatedUser = { ...user, ...userData };
+      setUser(updatedUser);
+      localStorage.setItem("userData", JSON.stringify(updatedUser));
+    }
+  };
+
   const value = {
     user,
     loading,
     login,
     signup,
     logout,
+    updateUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

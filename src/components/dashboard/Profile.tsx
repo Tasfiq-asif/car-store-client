@@ -1,13 +1,13 @@
-import ProfileCad from "./ProfileCad";
-import UpdatePassword from "./UpdatePassword";
+import ProfileCard from "./ProfileCard";
+import ProfileManagement from "./UserDashboard/ProfileManagement";
 
 const Profile = () => {
-    return (
-        <div className="flex flex-col items-center justify-center w-screen h-full p-4 gap-3 ">
-            <ProfileCad/>
-            <UpdatePassword/>
-        </div>
-    );
+  return (
+    <div className="flex flex-col items-center w-full gap-8">
+      <ProfileCard />
+      <ProfileManagement />
+    </div>
+  );
 };
 
 export default Profile;
