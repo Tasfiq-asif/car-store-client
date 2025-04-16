@@ -89,7 +89,7 @@ const FeaturedCars = () => {
 
         <div className="text-center mt-12">
           <Button asChild size="lg" variant="outline">
-            <Link to="/cars">View All Cars</Link>
+            <Link to="/allProducts">View All Cars</Link>
           </Button>
         </div>
       </div>
