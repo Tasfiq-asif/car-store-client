@@ -41,10 +41,10 @@ const AllProducts = () => {
       : true;
     const matchesAvailability = availability
       ? car.inStock === availability
-          : true;
-      const matchesUnAvailability = UnAvailability
-        ? car.inStock !== UnAvailability
-            : true;
+      : true;
+    const matchesUnAvailability = UnAvailability
+      ? car.inStock !== UnAvailability
+      : true;
     const matchesSearchQuery = searchQuery
       ? car.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
         car.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -56,8 +56,8 @@ const AllProducts = () => {
       matchesModel &&
       matchesBrand &&
       matchesCategory &&
-        matchesAvailability &&
-        matchesUnAvailability &&
+      matchesAvailability &&
+      matchesUnAvailability &&
       matchesSearchQuery
     );
   });

@@ -7,6 +7,16 @@ export interface User {
   photo?: string;
 }
 
+export interface Order {
+  _id: string;
+  carId: string;
+  email: string;
+  quantity: number;
+  totalprice: number;
+  status?: string;
+  createdAt: string;
+}
+
 export interface Car {
   _id: string;
   brand: string;
