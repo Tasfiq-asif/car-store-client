@@ -1,87 +1,88 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Car } from "../../types";
 import { Button } from "@/components/ui/button";
 import FeaturedCarCard from "../cars/FeaturedCarCard";
-
-// Mock data for featured cars
-const featuredCars: Car[] = [
-  {
-    _id: "1",
-    title: "2023 BMW 3 Series",
-    subtitle: "Luxury sedan with premium features",
-    price: 45000,
-    description: "Luxury sedan with premium features",
-    image: "/bmw-3.jpg",
-    brand: "BMW",
-    model: "3 Series",
-    year: 2023,
-    mileage: 5000,
-    fuelType: "Petrol",
-    transmission: "Automatic",
-    category: "Sedan",
-    location: "New York, NY",
-    color: "Black",
-    features: ["Leather Seats", "Navigation", "Sunroof"],
-    quantity: 1,
-    inStock: true,
-  },
-  {
-    _id: "2",
-    title: "2024 Mercedes-Benz C-Class",
-    subtitle: "Elegant design with cutting-edge technology",
-    price: 52000,
-    description: "Elegant design with cutting-edge technology",
-    image: "/mercedes-benz-C-Class.jpg",
-    brand: "Mercedes-Benz",
-    model: "C-Class",
-    year: 2024,
-    mileage: 1000,
-    fuelType: "Hybrid",
-    transmission: "Automatic",
-    category: "Sedan",
-    location: "Los Angeles, CA",
-    color: "Silver",
-    features: ["360° Camera", "Wireless Charging", "Lane Assist"],
-    quantity: 1,
-    inStock: true,
-  },
-  {
-    _id: "3",
-    title: "2023 Audi A4",
-    subtitle: "Perfect blend of performance and comfort",
-    price: 48000,
-    description: "Perfect blend of performance and comfort",
-    image: "/Audi-A4.jpg",
-    brand: "Audi",
-    model: "A4",
-    year: 2023,
-    mileage: 3000,
-    fuelType: "Petrol",
-    transmission: "Automatic",
-    category: "Sedan",
-    location: "Chicago, IL",
-    color: "White",
-    features: ["Virtual Cockpit", "Bang & Olufsen Sound", "Quattro AWD"],
-    quantity: 1,
-    inStock: true,
-  },
-];
+import { axiosPublic } from "@/lib/axios";
+import { isAuthenticated } from "@/lib/auth";
+import { LoadingOverlay } from "@/components/ui/loading-overlay";
 
 const FeaturedCars = () => {
+  const [featuredCars, setFeaturedCars] = useState<Car[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchFeaturedCars = async () => {
+      try {
+        setLoading(true);
+        const response = await axiosPublic.get("/v1/cars");
+        if (
+          response.data &&
+          response.data.data &&
+          response.data.data.length > 0
+        ) {
+          // Get all cars and randomly select 3
+          const allCars = response.data.data;
+          const randomCars = getRandomCars(allCars, 3);
+          setFeaturedCars(randomCars);
+        }
+      } catch (err) {
+        console.error("Error fetching featured cars:", err);
+        setError("Failed to load featured cars");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeaturedCars();
+  }, []);
+
+  // Function to randomly select n cars from the array
+  const getRandomCars = (cars: Car[], count: number): Car[] => {
+    const shuffled = [...cars].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  };
+
+  // Handle card click with authentication check
+  const handleCarClick = (carId: string) => {
+    if (isAuthenticated()) {
+      navigate(`/cars/${carId}`);
+    } else {
+      navigate("/signin", { state: { from: `/cars/${carId}` } });
+    }
+  };
+
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-gray-50 relative">
+      {loading && (
+        <LoadingOverlay isLoading={loading} text="Loading featured cars..." />
+      )}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900">Featured Cars</h2>
           <p className="mt-4 text-xl text-gray-600">
             Discover our hand-picked selection of premium vehicles
           </p>
+          {error && <p className="mt-2 text-red-500">{error}</p>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredCars.map((car) => (
-            <FeaturedCarCard key={car._id} car={car} />
+            <div key={car._id}>
+              <FeaturedCarCard car={car} onViewDetails={handleCarClick} />
+            </div>
           ))}
+
+          {!loading && featuredCars.length === 0 && !error && (
+            <div className="col-span-3 text-center py-12">
+              <p className="text-gray-500">
+                No featured cars available at the moment.
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="text-center mt-12">

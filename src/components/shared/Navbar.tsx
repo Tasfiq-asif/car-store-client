@@ -16,7 +16,6 @@ const Navbar = () => {
     { label: "Home", path: "/" },
     { label: "Cars", path: "/allProducts" },
     { label: "About", path: "/aboutPage" },
-    { label: "Contact", path: "/contact" },
   ];
 
   console.log(user?.role);
