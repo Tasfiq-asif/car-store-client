@@ -17,7 +17,7 @@ export default function OrderTable() {
   const fetchOrders = async () => {
     try {
       const res = await axiosProtected.get(
-        import.meta.env.VITE_API_URL + "v1/orders"
+        `${import.meta.env.VITE_API_URL}/v1/orders`
       );
       console.log(res.data.data);
       setOrders(res.data.data);
@@ -31,8 +31,8 @@ export default function OrderTable() {
 
   const fetchRevenue = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:8000/api/v1/orders/revenue"
+      const res = await axiosProtected.get(
+        `${import.meta.env.VITE_API_URL}/v1/orders/revenue`
       );
       // console.log(res.data.data);
       setRevenue(res.data.data);
@@ -43,9 +43,12 @@ export default function OrderTable() {
 
   const handleStatusChange = async (orderId: string, status: string) => {
     try {
-      await axios.patch(`http://localhost:8000/api/v1/orders/${orderId}`, {
-        status,
-      });
+      await axiosProtected.patch(
+        `${import.meta.env.VITE_API_URL}/v1/orders/${orderId}`,
+        {
+          status,
+        }
+      );
       setOrders((prev) =>
         prev
           ? prev.map((order) =>

@@ -78,7 +78,7 @@ export default function AddProducts() {
       };
 
       const response = await axios.post(
-        import.meta.env.VITE_API_URL + "v1/cars",
+        `${import.meta.env.VITE_API_URL}/v1/cars`,
         productData
       );
       console.log("Backend Response:", response.data);

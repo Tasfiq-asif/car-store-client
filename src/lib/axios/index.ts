@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAuthToken } from "../auth";
 
-const BASE_URL = "import.meta.env.VITE_API_URL/api";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 // Public instance - for non-protected routes (login, register, etc.)
 export const axiosPublic = axios.create({
