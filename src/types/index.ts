@@ -15,6 +15,11 @@ export interface Order {
   totalprice: number;
   status?: string;
   createdAt: string;
+  paymentStatus?: string;
+  paymentMethod?: string;
+  paymentId?: string;
+  sessionId?: string;
+  notes?: string;
 }
 
 export interface Car {
