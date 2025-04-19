@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { FiMenu, FiX } from "react-icons/fi";
 import { FaShoppingCart } from "react-icons/fa";
 import { useAppSelector } from "@/redux/hooks";
-import car_logo from "@/assets/car_logo.png";
+import car_logo from "./../../assets/car_logo.png";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -26,7 +26,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0">
-              <img className="h-8 w-auto" src={car_logo} alt="CarShop Logo" />
+              <img className="h-20 w-auto" src={car_logo} alt="CarShop Logo" />
             </Link>
             <div className="hidden md:ml-6 md:flex md:space-x-8">
               {navItems.map((item) => (
