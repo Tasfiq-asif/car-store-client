@@ -13,18 +13,16 @@ import { SidebarProvider } from "./components/ui/sidebar";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  
   <HelmetProvider>
     <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-    <SidebarProvider>
-      <AuthProvider>
-        <RouterProvider router={router} />
-        <Toaster />
-      </AuthProvider>
-      </SidebarProvider>
-    </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <SidebarProvider>
+          <AuthProvider>
+            <RouterProvider router={router} />
+            <Toaster />
+          </AuthProvider>
+        </SidebarProvider>
+      </QueryClientProvider>
     </Provider>
   </HelmetProvider>
-  
 );

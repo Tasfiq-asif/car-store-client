@@ -7,6 +7,21 @@ export interface User {
   photo?: string;
 }
 
+export interface Order {
+  _id: string;
+  carId: string;
+  email: string;
+  quantity: number;
+  totalprice: number;
+  status?: string;
+  createdAt: string;
+  paymentStatus?: string;
+  paymentMethod?: string;
+  paymentId?: string;
+  sessionId?: string;
+  notes?: string;
+}
+
 export interface Car {
   _id: string;
   brand: string;
@@ -17,7 +32,7 @@ export interface Car {
   year: number;
   price: number;
   mileage: number;
-  fuelType: "Petrol" | "Diesel" | "Electric" | "Hybrid";
+  fuelType: "Petrol" | "Diesel" | "Electric" | "Hybrid" | "Gasoline";
   transmission: "Automatic" | "Manual";
   category: "Sedan" | "SUV" | "Truck" | "Coupe" | "Convertible";
   location: string;

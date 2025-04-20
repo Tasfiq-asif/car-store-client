@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { Car } from "../../types";
 import {
   Card,
@@ -12,23 +11,33 @@ import { Button } from "@/components/ui/button";
 
 interface FeaturedCarCardProps {
   car: Car;
+  onViewDetails?: (carId: string) => void;
 }
 
-const FeaturedCarCard = ({ car }: FeaturedCarCardProps) => {
+const FeaturedCarCard = ({ car, onViewDetails }: FeaturedCarCardProps) => {
+  const handleViewDetails = () => {
+    if (onViewDetails) {
+      onViewDetails(car._id);
+    }
+  };
+
   return (
-    <Card className="overflow-hidden">
-      <div className="aspect-video relative overflow-hidden">
+    <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+      <div
+        className="aspect-video relative overflow-hidden"
+        onClick={handleViewDetails}
+      >
         <img
           src={car.image}
           alt={car.title}
           className="object-cover w-full h-full transition-transform hover:scale-105"
         />
       </div>
-      <CardHeader>
+      <CardHeader onClick={handleViewDetails}>
         <CardTitle>{car.title}</CardTitle>
         <CardDescription>{car.subtitle}</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent onClick={handleViewDetails}>
         <div className="space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-2xl font-bold">${car.price}</span>
@@ -40,21 +49,22 @@ const FeaturedCarCard = ({ car }: FeaturedCarCardProps) => {
           </div>
           <div className="h-14">
             <div className="flex flex-wrap gap-2  ">
-              {car.features.slice(0, 3).map((feature, index) => (
-                <span
-                  key={index}
-                  className="px-2 py-1 bg-gray-100 text-sm rounded-md"
-                >
-                  {feature}
-                </span>
-              ))}
+              {car.features &&
+                car.features.slice(0, 3).map((feature, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-gray-100 text-sm rounded-md"
+                  >
+                    {feature}
+                  </span>
+                ))}
             </div>
           </div>
         </div>
       </CardContent>
       <CardFooter>
-        <Button asChild className="w-full">
-          <Link to={`/cars/${car._id}`}>View Details</Link>
+        <Button className="w-full" onClick={handleViewDetails}>
+          View Details
         </Button>
       </CardFooter>
     </Card>

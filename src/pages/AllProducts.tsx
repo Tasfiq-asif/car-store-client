@@ -12,10 +12,13 @@ import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { useGetAllCarQuery } from "@/redux/api/carApi";
+import { useNavigate } from "react-router-dom";
+import { isAuthenticated } from "@/lib/auth";
 
 const AllProducts = () => {
   const { data } = useGetAllCarQuery(undefined);
   const cardata = data?.data;
+  const navigate = useNavigate();
 
   // State for filters
   const [priceRange, setPriceRange] = useState([0, 100000]);
@@ -41,10 +44,10 @@ const AllProducts = () => {
       : true;
     const matchesAvailability = availability
       ? car.inStock === availability
-          : true;
-      const matchesUnAvailability = UnAvailability
-        ? car.inStock !== UnAvailability
-            : true;
+      : true;
+    const matchesUnAvailability = UnAvailability
+      ? car.inStock !== UnAvailability
+      : true;
     const matchesSearchQuery = searchQuery
       ? car.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
         car.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -56,11 +59,20 @@ const AllProducts = () => {
       matchesModel &&
       matchesBrand &&
       matchesCategory &&
-        matchesAvailability &&
-        matchesUnAvailability &&
+      matchesAvailability &&
+      matchesUnAvailability &&
       matchesSearchQuery
     );
   });
+
+  // Handle car click with authentication check
+  const handleCarClick = (carId: string) => {
+    if (isAuthenticated()) {
+      navigate(`/cars/${carId}`);
+    } else {
+      navigate("/signin", { state: { from: `/cars/${carId}` } });
+    }
+  };
 
   return (
     <div>
@@ -177,7 +189,11 @@ const AllProducts = () => {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-10/12 pb-12">
           {filteredCars?.map((car: any) => (
-            <FeaturedCarCard key={car.id} car={car} />
+            <FeaturedCarCard
+              key={car._id}
+              car={car}
+              onViewDetails={handleCarClick}
+            />
           ))}
         </div>
       </div>
