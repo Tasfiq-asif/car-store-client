@@ -1,54 +1,86 @@
-# React + TypeScript + Vite
+# Car Shop 🚗
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application for car shopping, browsing, and purchasing with a user-friendly interface and secure authentication.
 
-Currently, two official plugins are available:
+## Live Link
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+https://car-shop-five-henna.vercel.app/
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **User Authentication** - Secure login and registration with JWT
+- **Product Browsing** - Search, filter, and view car listings
+- **Shopping Cart** - Add cars to cart and proceed to checkout
+- **User Dashboard** - View order history and manage profile
+- **Admin Dashboard** - Manage products, users, and orders
+- **Responsive Design** - Works on all devices and screen sizes
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Tech Stack
+
+- **Frontend**: React, TypeScript, Vite
+- **Styling**: TailwindCSS
+- **State Management**: Redux Toolkit
+- **Routing**: React Router
+- **API Requests**: Axios, React Query
+- **UI Components**: Radix UI, Framer Motion
+- **Payment Integration**: Stripe
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/Tasfiq-asif/car-shop.git
+cd car-shop
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
+# or
+yarn
 ```
+
+3. Set up environment variables
+   Create a `.env.local` file in the root directory with necessary environment variables.
+
+4. Run the development server
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+5. Open [http://localhost:5173](http://localhost:5173) in your browser to see the application.
+
+## Project Structure
+
+- `/src/components`: Reusable UI components
+- `/src/pages`: Application pages
+- `/src/layouts`: Layout components
+- `/src/redux`: Redux store and slices
+- `/src/hooks`: Custom React hooks
+- `/src/lib`: Utility functions
+- `/src/routes`: Route definitions
+- `/src/types`: TypeScript type definitions
+- `/src/assets`: Static assets
+
+## Available Scripts
+
+- `npm run dev` - Start the development server
+- `npm run build` - Build the app for production
+- `npm run lint` - Run ESLint to check code quality
+- `npm run preview` - Preview the production build locally
+
+## License
+
+MIT
