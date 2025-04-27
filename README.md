@@ -20,7 +20,7 @@ https://car-shop-five-henna.vercel.app/
 - **Frontend**: React, TypeScript, Vite
 - **Styling**: TailwindCSS
 - **State Management**: Redux Toolkit
-- **Routing**: React Router
+- **Routing**: React Ro
 - **API Requests**: Axios, React Query
 - **UI Components**: Radix UI, Framer Motion
 - **Payment Integration**: Stripe
