@@ -92,10 +92,6 @@ export const router = createBrowserRouter([
         element: <AdminOrders />,
       },
       {
-        path: "/dashboard/settings",
-        element: <Setting />,
-      },
-      {
         path: "/dashboard/profile",
         element: <Profile />,
       },

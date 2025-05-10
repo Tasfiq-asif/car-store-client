@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/useAuth";
 import { ApiError, PasswordData, ProfileData } from "@/types";
+import { User as UserIcon } from "lucide-react";
 
 // Define interface for component props
 interface ProfileManagementProps {
@@ -135,45 +136,69 @@ export default function ProfileManagement({
   };
 
   return (
-    <div className="container mx-auto p-6 w-full max-w-4xl">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger value="profile">Profile Information</TabsTrigger>
-          <TabsTrigger value="password">Change Password</TabsTrigger>
-        </TabsList>
+    <div className="w-full">
+      <Card className="shadow-xl rounded-xl w-full">
+        <CardHeader className="flex flex-col items-center">
+          <CardTitle className="text-xl font-bold text-blue-700 mb-2">
+            Profile Management
+          </CardTitle>
+          <p className="text-gray-600 mb-4 text-center">
+            Update your profile information and change your password
+          </p>
+        </CardHeader>
+        <CardContent>
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-blue-100 rounded-lg">
+              <TabsTrigger value="profile">Profile Information</TabsTrigger>
+              <TabsTrigger value="password">Change Password</TabsTrigger>
+            </TabsList>
 
-        <TabsContent value="profile">
-          <Card>
-            <CardHeader>
-              <CardTitle>Profile Information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={updateProfile} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={profileData.name}
-                    onChange={handleProfileChange}
-                    placeholder="Your name"
+            <TabsContent value="profile">
+              <div className="flex flex-col items-center mb-6">
+                {/* Avatar Preview */}
+                {profileData.photo ? (
+                  <img
+                    src={profileData.photo}
+                    alt="Profile"
+                    className="w-20 h-20 rounded-full object-cover border-4 border-blue-200 shadow mb-2"
                   />
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center border-4 border-blue-200 shadow mb-2">
+                    <UserIcon className="w-10 h-10 text-blue-400" />
+                  </div>
+                )}
+              </div>
+              <form onSubmit={updateProfile} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      value={profileData.name}
+                      onChange={handleProfileChange}
+                      placeholder="Your name"
+                      className="focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={user?.email || ""}
+                      disabled
+                      className="bg-gray-100"
+                    />
+                    <p className="text-sm text-gray-500">
+                      Email cannot be changed
+                    </p>
+                  </div>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={user?.email || ""}
-                    disabled
-                    className="bg-gray-100"
-                  />
-                  <p className="text-sm text-gray-500">
-                    Email cannot be changed
-                  </p>
-                </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="photo">Profile Photo URL</Label>
                   <Input
@@ -182,48 +207,47 @@ export default function ProfileManagement({
                     value={profileData.photo || ""}
                     onChange={handleProfileChange}
                     placeholder="https://example.com/photo.jpg"
+                    className="focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-
-                <Button type="submit" disabled={isLoading} className="w-full">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                >
                   {isLoading ? "Saving..." : "Save Profile"}
                 </Button>
               </form>
-            </CardContent>
-          </Card>
-        </TabsContent>
+            </TabsContent>
 
-        <TabsContent value="password">
-          <Card>
-            <CardHeader>
-              <CardTitle>Change Password</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={changePassword} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="currentPassword">Current Password</Label>
-                  <Input
-                    id="currentPassword"
-                    name="currentPassword"
-                    type="password"
-                    value={passwordData.currentPassword}
-                    onChange={handlePasswordChange}
-                    required
-                  />
+            <TabsContent value="password">
+              <form onSubmit={changePassword} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="currentPassword">Current Password</Label>
+                    <Input
+                      id="currentPassword"
+                      name="currentPassword"
+                      type="password"
+                      value={passwordData.currentPassword}
+                      onChange={handlePasswordChange}
+                      required
+                      className="focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="newPassword">New Password</Label>
+                    <Input
+                      id="newPassword"
+                      name="newPassword"
+                      type="password"
+                      value={passwordData.newPassword}
+                      onChange={handlePasswordChange}
+                      required
+                      className="focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
                 </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="newPassword">New Password</Label>
-                  <Input
-                    id="newPassword"
-                    name="newPassword"
-                    type="password"
-                    value={passwordData.newPassword}
-                    onChange={handlePasswordChange}
-                    required
-                  />
-                </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="confirmPassword">Confirm Password</Label>
                   <Input
@@ -233,17 +257,21 @@ export default function ProfileManagement({
                     value={passwordData.confirmPassword}
                     onChange={handlePasswordChange}
                     required
+                    className="focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-
-                <Button type="submit" disabled={isLoading} className="w-full">
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                >
                   {isLoading ? "Changing..." : "Change Password"}
                 </Button>
               </form>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -3,7 +3,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { axiosProtected } from "@/lib/axios";
 import { Order } from "@/types";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, AlertCircle } from "lucide-react";
+import {
+  Loader2,
+  AlertCircle,
+  DollarSign,
+  Calendar,
+  Package,
+  Mail,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 
 export default function OrderTable() {
   const [orders, setOrders] = useState<Order[] | undefined>();
@@ -82,23 +91,69 @@ export default function OrderTable() {
     return (
       <div className="flex justify-center items-center h-40">
         <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-        <p className="ml-2">Loading order data...</p>
+        <p className="ml-2 text-gray-600">Loading order data...</p>
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold text-center text-blue-700 mb-4">
-        Orders Table
-      </h2>
+    <motion.div
+      className="p-6 max-w-7xl mx-auto"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-gray-800 mb-2">
+          Orders Dashboard
+        </h2>
+        <p className="text-gray-600">
+          Manage and track all your orders in one place
+        </p>
+      </div>
 
-      <p className="text-lg font-semibold text-center mb-6">
-        Total Revenue: ${revenue}
-      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm opacity-80">Total Revenue</p>
+                <h3 className="text-2xl font-bold">${revenue}</h3>
+              </div>
+              <DollarSign className="h-8 w-8 opacity-80" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm opacity-80">Total Orders</p>
+                <h3 className="text-2xl font-bold">{orders?.length || 0}</h3>
+              </div>
+              <Package className="h-8 w-8 opacity-80" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm opacity-80">Active Customers</p>
+                <h3 className="text-2xl font-bold">
+                  {new Set(orders?.map((order) => order.email)).size || 0}
+                </h3>
+              </div>
+              <Mail className="h-8 w-8 opacity-80" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {error && (
-        <Alert variant="destructive" className="mb-4">
+        <Alert variant="destructive" className="mb-6">
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>{error}</AlertDescription>
@@ -106,58 +161,94 @@ export default function OrderTable() {
       )}
 
       {!loading && orders?.length === 0 && (
-        <div className="text-center py-8">
-          <p className="text-gray-500">No orders found.</p>
-        </div>
+        <Card className="text-center py-12">
+          <CardContent>
+            <Package className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+            <p className="text-gray-500 text-lg">No orders found.</p>
+          </CardContent>
+        </Card>
       )}
 
       {orders && orders.length > 0 && (
-        <Card>
-          <CardContent>
-            <div className="p-6">
-              <h2 className="text-2xl font-bold mb-4">All Sales Data</h2>
-              <div className="overflow-x-auto">
-                <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden">
-                  <thead className="bg-gray-200">
-                    <tr>
-                      <th className="px-4 py-2 border">#</th>
-                      <th className="px-4 py-2 border">Car ID</th>
-                      <th className="px-4 py-2 border">Customer Email</th>
-                      <th className="px-4 py-2 border">Quantity</th>
-                      <th className="px-4 py-2 border">Total Price ($)</th>
-                      <th className="px-4 py-2 border">Sale Date</th>
-                      <th className="px-4 py-2 border">Payment Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orders.map((sale, index) => (
-                      <tr key={sale._id} className="hover:bg-gray-100">
-                        <td className="px-4 py-2 border text-center">
-                          {index + 1}
-                        </td>
-                        <td className="px-4 py-2 border">{sale.carId}</td>
-                        <td className="px-4 py-2 border">{sale.email}</td>
-                        <td className="px-4 py-2 border text-center">
-                          {sale.quantity}
-                        </td>
-                        <td className="px-4 py-2 border text-right">
-                          ${sale.totalprice}
-                        </td>
-                        <td className="px-4 py-2 border text-center">
+        <Card className="shadow-lg">
+          <CardContent className="p-6">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      #
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Car ID
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Customer
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Quantity
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Total
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Date
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {orders.map((sale, index) => (
+                    <motion.tr
+                      key={sale._id}
+                      className="hover:bg-gray-50 transition-colors"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {index + 1}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {sale.carId}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {sale.email}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                        {sale.quantity}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">
+                        ${sale.totalprice}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <div className="flex items-center">
+                          <Calendar className="h-4 w-4 mr-2 text-gray-400" />
                           {new Date(sale.createdAt).toLocaleDateString()}
-                        </td>
-                        <td className="px-4 py-2 border text-center">
-                          {sale.paymentStatus || "N/A"}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <Badge
+                          variant={
+                            sale.paymentStatus === "paid"
+                              ? "success"
+                              : "secondary"
+                          }
+                          className="capitalize"
+                        >
+                          {sale.paymentStatus || "pending"}
+                        </Badge>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </Card>
       )}
-    </div>
+    </motion.div>
   );
 }

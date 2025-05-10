@@ -1092,6 +1092,7 @@ caniuse-lite@^1.0.30001688, caniuse-lite@^1.0.30001702:
     "@radix-ui/react-slider" "^1.2.4"
     "@radix-ui/react-slot" "^1.2.0"
     "@radix-ui/react-switch" "^1.1.4"
+    "@radix-ui/react-tabs" "^1.1.4"
     "@radix-ui/react-tooltip" "^1.2.0"
     "@reduxjs/toolkit" "^2.6.1"
     "@stripe/stripe-js" "^7.0.0"
@@ -1100,7 +1101,7 @@ caniuse-lite@^1.0.30001688, caniuse-lite@^1.0.30001702:
     axios "^1.6.8"
     car-shop "file:"
     class-variance-authority "^0.7.1"
-    clsx "^2.1.0"
+    clsx "^2.1.1"
     embla-carousel-autoplay "^8.6.0"
     embla-carousel-react "^8.6.0"
     framer-motion "^12.6.5"
@@ -1113,7 +1114,7 @@ caniuse-lite@^1.0.30001688, caniuse-lite@^1.0.30001702:
     react-redux "^9.2.0"
     react-router-dom "^6.22.3"
     swiper "^11.0.7"
-    tailwind-merge "^2.2.1"
+    tailwind-merge "^2.6.0"
     tailwindcss-animate "^1.0.7"
 
 chalk@^4.0.0:
@@ -1578,13 +1579,13 @@ fraction.js@^4.3.7:
   resolved "https://registry.npmjs.org/fraction.js/-/fraction.js-4.3.7.tgz"
   integrity sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==
 
-framer-motion@^12.6.5:
-  version "12.6.5"
-  resolved "https://registry.npmjs.org/framer-motion/-/framer-motion-12.6.5.tgz"
-  integrity sha512-MKvnWov0paNjvRJuIy6x418w23tFqRfS6CXHhZrCiSEpXVlo/F+usr8v4/3G6O0u7CpsaO1qop+v4Ip7PRCBqQ==
+framer-motion@^12.10.5:
+  version "12.10.5"
+  resolved "https://registry.npmjs.org/framer-motion/-/framer-motion-12.10.5.tgz"
+  integrity sha512-p6VF1YkwWvNDFzg5IQ5lqPx11Td4TQ6LqDnshV7sWj0Nrp4dwz2/aEzmgh9WA9ridcTIJ625Fr0oiuhgqIoFwQ==
   dependencies:
-    motion-dom "^12.6.5"
-    motion-utils "^12.6.5"
+    motion-dom "^12.10.5"
+    motion-utils "^12.9.4"
     tslib "^2.4.0"
 
 fs.realpath@^1.0.0:
@@ -2041,17 +2042,17 @@ minimatch@^9.0.4:
   resolved "https://registry.npmjs.org/minipass/-/minipass-7.1.2.tgz"
   integrity sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==
 
-motion-dom@^12.6.5:
-  version "12.6.5"
-  resolved "https://registry.npmjs.org/motion-dom/-/motion-dom-12.6.5.tgz"
-  integrity sha512-jpM9TQLXzYMWMJ7Ec7sAj0iis8oIuu6WvjI3yNKJLdrZyrsI/b2cRInDVL8dCl683zQQq19DpL9cSMP+k8T1NA==
+motion-dom@^12.10.5:
+  version "12.10.5"
+  resolved "https://registry.npmjs.org/motion-dom/-/motion-dom-12.10.5.tgz"
+  integrity sha512-F7XKmhxXEH/y3aWWf0N2w69wNSN+6PcJ1seqR1WolClmXpPhj+xwzs9j5CpsMFzeHR1D7irl3JcWMToPRwX6Hg==
   dependencies:
-    motion-utils "^12.6.5"
+    motion-utils "^12.9.4"
 
-motion-utils@^12.6.5:
-  version "12.6.5"
-  resolved "https://registry.npmjs.org/motion-utils/-/motion-utils-12.6.5.tgz"
-  integrity sha512-IsOeKsOF+FWBhxQEDFBO6ZYC8/jlidmVbbLpe9/lXSA9j9kzGIMUuIBx2SZY+0reAS0DjZZ1i7dJp4NHrjocPw==
+motion-utils@^12.9.4:
+  version "12.9.4"
+  resolved "https://registry.npmjs.org/motion-utils/-/motion-utils-12.9.4.tgz"
+  integrity sha512-BW3I65zeM76CMsfh3kHid9ansEJk9Qvl+K5cu4DVHKGsI52n76OJ4z2CUJUV+Mn3uEP9k1JJA3tClG0ggSrRcg==
 
 ms@^2.1.3:
   version "2.1.3"
