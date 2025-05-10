@@ -67,7 +67,7 @@ const Home = () => {
                         variant="default"
                         className="bg-blue-600 hover:bg-blue-700"
                       >
-                        <Link to="/cars">Browse Cars</Link>
+                        <Link to="/allProducts">Browse Cars</Link>
                       </Button>
                     </div>
                   </div>

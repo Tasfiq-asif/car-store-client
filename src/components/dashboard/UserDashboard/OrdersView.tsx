@@ -33,7 +33,7 @@ export default function OrderView() {
 
   useEffect(() => {
     fetchOrders();
-  }, []);
+  }, [user]);
 
   const fetchOrders = async () => {
     try {

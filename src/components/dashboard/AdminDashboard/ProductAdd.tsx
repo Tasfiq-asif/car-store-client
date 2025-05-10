@@ -5,6 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Car, Upload, Save } from "lucide-react";
 import axios from "axios";
 
 const categories = ["Sedan", "SUV", "Truck", "Coupe", "Convertible"];
@@ -91,207 +100,231 @@ export default function AddProducts() {
 
   return (
     <motion.div
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 to-blue-100 p-4"
+      className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
-      <Card className="w-full max-w-3xl shadow-2xl rounded-2xl p-6 bg-white">
-        <CardContent>
-          <h2 className="text-2xl font-bold text-center mb-6 text-green-700">
-            Add New Car
-          </h2>
-          <form
-            onSubmit={handleSubmit}
-            className="grid grid-cols-1 md:grid-cols-2 gap-4"
-          >
-            <div>
-              <Label>Brand</Label>
-              <Input
-                name="brand"
-                value={form.brand}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <Label>Model</Label>
-              <Input
-                name="model"
-                value={form.model}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <Label>Title</Label>
-              <Input
-                name="title"
-                value={form.title}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <Label>Subtitle</Label>
-              <Input
-                name="subtitle"
-                value={form.subtitle}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <Label>Year</Label>
-              <Input
-                type="number"
-                name="year"
-                value={form.year}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <Label>Price</Label>
-              <Input
-                type="number"
-                name="price"
-                value={form.price}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <Label>Mileage</Label>
-              <Input
-                type="number"
-                name="mileage"
-                value={form.mileage}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <Label>Fuel Type</Label>
-              <select
-                name="fuelType"
-                value={form.fuelType}
-                onChange={handleChange}
-                className="w-full border rounded-md px-3 py-2"
-              >
-                {fuelTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <Label>Transmission</Label>
-              <select
-                name="transmission"
-                value={form.transmission}
-                onChange={handleChange}
-                className="w-full border rounded-md px-3 py-2"
-              >
-                {transmissions.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <Label>Category</Label>
-              <select
-                name="category"
-                value={form.category}
-                onChange={handleChange}
-                className="w-full border rounded-md px-3 py-2"
-              >
-                {categories.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <Label>Location</Label>
-              <Input
-                name="location"
-                value={form.location}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <Label>Color</Label>
-              <Input
-                name="color"
-                value={form.color}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <Label>Features (comma-separated)</Label>
-              <Input
-                name="features"
-                value={form.features}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="col-span-2">
-              <Label>Description</Label>
-              <Textarea
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                rows={4}
-                required
-              />
-            </div>
-            <div>
-              <Label>In Stock</Label>
-              <Input
-                type="checkbox"
-                name="inStock"
-                checked={form.inStock}
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Label>Car Image</Label>
-              <Input
-                type="file"
-                name="image"
-                accept="image/*"
-                onChange={handleChange}
-              />
-            </div>
-            <div>
-              <Label>Quantity</Label>
-              <Input
-                type="number"
-                name="quantity"
-                value={form.quantity}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="col-span-2">
-              <Button
-                type="submit"
-                className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl"
-              >
-                Add Car
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
+      <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="mb-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">Add New Car</h2>
+          <p className="text-gray-600">
+            Fill in the details to add a new car to your inventory
+          </p>
+        </div>
+
+        <Card className="shadow-xl w-full">
+          <CardContent className="p-6">
+            <form onSubmit={handleSubmit} className="space-y-6 w-full">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Basic Information Section */}
+                <div className="col-span-2">
+                  <h3 className="text-lg font-semibold text-gray-700 mb-4 flex items-center">
+                    <Car className="h-5 w-5 mr-2" />
+                    Basic Information
+                  </h3>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Brand</Label>
+                  <Input
+                    name="brand"
+                    value={form.brand}
+                    onChange={handleChange}
+                    required
+                    className="focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., Toyota"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Model</Label>
+                  <Input
+                    name="model"
+                    value={form.model}
+                    onChange={handleChange}
+                    required
+                    className="focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., Camry"
+                  />
+                </div>
+
+                {/* Specifications Section */}
+                <div className="col-span-2 mt-6">
+                  <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                    Specifications
+                  </h3>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Year</Label>
+                  <Input
+                    type="number"
+                    name="year"
+                    value={form.year}
+                    onChange={handleChange}
+                    required
+                    className="focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., 2023"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Price ($)</Label>
+                  <Input
+                    type="number"
+                    name="price"
+                    value={form.price}
+                    onChange={handleChange}
+                    required
+                    className="focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., 25000"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Fuel Type</Label>
+                  <Select
+                    name="fuelType"
+                    value={form.fuelType}
+                    onValueChange={(value) =>
+                      handleChange({
+                        target: { name: "fuelType", value },
+                      } as any)
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select fuel type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {fuelTypes.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Transmission</Label>
+                  <Select
+                    name="transmission"
+                    value={form.transmission}
+                    onValueChange={(value) =>
+                      handleChange({
+                        target: { name: "transmission", value },
+                      } as any)
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select transmission" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {transmissions.map((t) => (
+                        <SelectItem key={t} value={t}>
+                          {t}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Additional Details Section */}
+                <div className="col-span-2 mt-6">
+                  <h3 className="text-lg font-semibold text-gray-700 mb-4">
+                    Additional Details
+                  </h3>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Location</Label>
+                  <Input
+                    name="location"
+                    value={form.location}
+                    onChange={handleChange}
+                    required
+                    className="focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., New York"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Color</Label>
+                  <Input
+                    name="color"
+                    value={form.color}
+                    onChange={handleChange}
+                    required
+                    className="focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., Silver"
+                  />
+                </div>
+
+                <div className="col-span-2 space-y-2">
+                  <Label>Features (comma-separated)</Label>
+                  <Input
+                    name="features"
+                    value={form.features}
+                    onChange={handleChange}
+                    required
+                    className="focus:ring-2 focus:ring-blue-500"
+                    placeholder="e.g., Bluetooth, Navigation, Sunroof"
+                  />
+                </div>
+
+                <div className="col-span-2 space-y-2">
+                  <Label>Description</Label>
+                  <Textarea
+                    name="description"
+                    value={form.description}
+                    onChange={handleChange}
+                    required
+                    className="focus:ring-2 focus:ring-blue-500 min-h-[100px]"
+                    placeholder="Enter detailed description of the car..."
+                  />
+                </div>
+
+                <div className="col-span-2 space-y-2">
+                  <Label>Image</Label>
+                  <div className="flex items-center space-x-4">
+                    <Input
+                      type="file"
+                      name="image"
+                      onChange={handleChange}
+                      accept="image/*"
+                      className="focus:ring-2 focus:ring-blue-500"
+                    />
+                    <Upload className="h-5 w-5 text-gray-400" />
+                  </div>
+                </div>
+
+                <div className="col-span-2 flex items-center space-x-2">
+                  <Switch
+                    checked={form.inStock}
+                    onCheckedChange={(checked) =>
+                      handleChange({
+                        target: { name: "inStock", checked },
+                      } as any)
+                    }
+                  />
+                  <Label>In Stock</Label>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-4 pt-6">
+                <Button
+                  type="submit"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center space-x-2"
+                >
+                  <Save className="h-5 w-5" />
+                  <span>Save Car</span>
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </motion.div>
   );
 }

@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "react-hot-toast";
 import { LoadingOverlay } from "@/components/ui/loading-overlay";
-
 import {
   Dialog,
   DialogContent,
@@ -21,6 +20,14 @@ import {
 import { useEffect, useState, ChangeEvent } from "react";
 import { axiosProtected } from "@/lib/axios";
 import { User } from "@/types";
+import {
+  Pencil,
+  Trash2,
+  ShieldCheck,
+  User as UserIcon,
+  XCircle,
+  CheckCircle,
+} from "lucide-react";
 
 // Define user interface
 
@@ -122,62 +129,100 @@ export default function ManageUsers() {
   };
 
   return (
-    <div className="p-6 relative">
+    <div className="p-6 relative bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
       <LoadingOverlay isLoading={loading} text="Loading users..." />
 
-      <h2 className="text-2xl font-bold mb-4 text-center text-blue-700">
+      <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">
         Manage Users
       </h2>
-      <Card>
-        <CardContent>
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">All Users</h2>
-            <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden">
-              <thead className="bg-gray-200">
+      <p className="text-gray-600 text-center mb-8">
+        View, edit, or remove users from your platform
+      </p>
+      <Card className="shadow-xl w-full">
+        <CardContent className="p-0">
+          <div className="overflow-x-auto rounded-lg">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-blue-100">
                 <tr>
-                  <th className="px-4 py-2 border">#</th>
-                  <th className="px-4 py-2 border">Name</th>
-                  <th className="px-4 py-2 border">Email</th>
-                  <th className="px-4 py-2 border">Role</th>
-                  <th className="px-4 py-2 border">Status</th>
-                  <th className="px-4 py-2 border">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    #
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Email
+                  </th>
+                  <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Role
+                  </th>
+                  <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="bg-white divide-y divide-gray-100">
                 {users?.map((user, index) => (
-                  <tr key={user._id} className="hover:bg-gray-100">
-                    <td className="px-4 py-2 border text-center">
+                  <tr
+                    key={user._id}
+                    className="hover:bg-blue-50 transition-colors"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {index + 1}
                     </td>
-                    <td className="px-4 py-2 border">{user.name}</td>
-                    <td className="px-4 py-2 border">{user.email}</td>
-                    <td className="px-4 py-2 border text-center">
-                      {user.role}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex items-center gap-2">
+                      <UserIcon className="h-4 w-4 text-blue-400" /> {user.name}
                     </td>
-                    <td className="px-4 py-2 border text-center">
-                      <span
-                        className={
-                          user.userStatus === "active"
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        {user.userStatus}
-                      </span>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                      {user.email}
                     </td>
-                    <td className="border px-4 py-2 space-x-2">
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {user.role === "admin" ? (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                          <ShieldCheck className="h-4 w-4 mr-1 text-yellow-500" />{" "}
+                          Admin
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          <UserIcon className="h-4 w-4 mr-1 text-blue-500" />{" "}
+                          User
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {user.userStatus === "active" ? (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          <CheckCircle className="h-4 w-4 mr-1 text-green-500" />{" "}
+                          Active
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                          <XCircle className="h-4 w-4 mr-1 text-red-500" />{" "}
+                          Inactive
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center space-x-2">
                       <Button
                         onClick={() => handleUpdate(user)}
                         variant="outline"
-                        className="text-blue-600"
+                        className="text-blue-600 hover:bg-blue-100"
+                        size="icon"
+                        aria-label="Edit"
                       >
-                        Edit
+                        <Pencil className="h-4 w-4" />
                       </Button>
                       <Button
                         onClick={() => handleDelete(user._id)}
                         variant="destructive"
+                        className="hover:bg-red-100"
+                        size="icon"
+                        aria-label="Delete"
                       >
-                        Delete
+                        <Trash2 className="h-4 w-4" />
                       </Button>
                     </td>
                   </tr>
@@ -191,63 +236,71 @@ export default function ManageUsers() {
       <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit User Details</DialogTitle>
+            <DialogTitle className="text-xl font-bold text-blue-700">
+              Edit User Details
+            </DialogTitle>
           </DialogHeader>
           {selectedUser && (
-            <div className="space-y-4">
-              <div>
-                <Label>Name</Label>
-                <Input
-                  name="name"
-                  value={selectedUser.name}
-                  onChange={handleEditChange}
-                />
-              </div>
-              <div>
-                <Label>Role</Label>
-                <Select
-                  value={selectedUser.role}
-                  onValueChange={(value: "user" | "admin") =>
-                    setSelectedUser((prev) =>
-                      prev ? { ...prev, role: value } : null
-                    )
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="user">User</SelectItem>
-                    <SelectItem value="admin">Admin</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label>Status</Label>
-                <Select
-                  value={selectedUser.userStatus}
-                  onValueChange={(value: "active" | "inactive") =>
-                    setSelectedUser((prev) =>
-                      prev
-                        ? {
-                            ...prev,
-                            userStatus: value,
-                          }
-                        : null
-                    )
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="inactive">Inactive</SelectItem>
-                  </SelectContent>
-                </Select>
+            <div className="space-y-4 mt-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label>Name</Label>
+                  <Input
+                    name="name"
+                    value={selectedUser.name}
+                    onChange={handleEditChange}
+                  />
+                </div>
+                <div>
+                  <Label>Role</Label>
+                  <Select
+                    value={selectedUser.role}
+                    onValueChange={(value: "user" | "admin") =>
+                      setSelectedUser((prev) =>
+                        prev ? { ...prev, role: value } : null
+                      )
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="user">User</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Status</Label>
+                  <Select
+                    value={selectedUser.userStatus}
+                    onValueChange={(value: "active" | "inactive") =>
+                      setSelectedUser((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              userStatus: value,
+                            }
+                          : null
+                      )
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="inactive">Inactive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <div className="pt-4 text-right">
-                <Button onClick={submitUpdate} disabled={isSubmitting}>
+                <Button
+                  onClick={submitUpdate}
+                  disabled={isSubmitting}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
                   {isSubmitting ? "Updating..." : "Update User"}
                 </Button>
               </div>
